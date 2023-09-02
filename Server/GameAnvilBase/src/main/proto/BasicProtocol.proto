@@ -1,0 +1,15 @@
+syntax="proto3";
+
+package protocol;
+
+message MessageRequest{
+  string Message = 1;
+}
+
+message MessageResponse{
+  string Message = 1;
+}
+
+message MessageBroadcast{
+  string Message = 1;
+}

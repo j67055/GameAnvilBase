@@ -1,0 +1,41 @@
+{
+  "common": {
+    "meetEndPoints": ["127.0.0.1:18000"], // 대상 노드의 ipcPort 등록
+    "debugMode": false //디버깅시 각종 timeout 이 발생안하도록 하는 옵션 , 리얼에서는 반드시 false 이어야 한다.
+  },
+
+  "location": {
+    "clusterSize": 1, // 총 몇개의 머신(VM)으로 구성되는가?
+    "replicaSize": 1, // 복제 그룹의 크기 (master + slave의 개수)
+    "shardFactor": 2  // sharding을 위한 인수 (아래의 주석 참고)
+  },
+
+  "match": {
+    "nodeCnt": 1
+  },
+
+  "gateway": {
+    "nodeCnt": 1, // 노드 개수. (노드 번호는 0 부터 부여 됨)
+    "dns": "", // 클라이언트와 연결되는 도메인 주소.
+    "connectGroup": { // 커넥션 종류.
+      "TCP_SOCKET": {
+        "port": 18200, // 클라이언트와 연결되는 포트.
+        "idleClientTimeout": 240000 // 데이터 송수신이 없는 상태 이후의 타임아웃. (0 이면 사용하지 않음)
+      },
+      "WEB_SOCKET": {
+        "port": 18300,
+        "idleClientTimeout": 0
+      }
+    }
+  },
+
+  "game": [
+    {
+      "nodeCnt": 1,
+      "serviceId": 1,
+      "serviceName": "Sync",
+      "channelIDs": [""], // 노드마다 부여할 채널 ID. (유니크하지 않아도 됨. ""는 채널 사용하지 않음을 의미)
+      "userTimeout": 5000 // 클라이언트의 접속 끊김 이후 유저 객체를 서버에서 제거하지 않고 얼마동안 관리할지 설정
+    }
+  ]
+}

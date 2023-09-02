@@ -1,0 +1,1 @@
+../../../protoc ./BasicProtocol.proto --java_out=../java

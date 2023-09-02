@@ -1,0 +1,10 @@
+# VM Options
+-javaagent:.\src\main\resources\META-INF\quasar-core-0.7.10-jdk8.jar=bm
+-Xms2g
+-Xmx2g
+-XX:+UseG1GC
+-XX:MaxGCPauseMillis=100
+-XX:+UseStringDeduplication
+
+# Program Arguments
+src/main/resources/

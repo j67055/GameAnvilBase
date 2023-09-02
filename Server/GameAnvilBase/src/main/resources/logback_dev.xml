@@ -1,0 +1,79 @@
+<configuration debug="true">
+<!--
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+-->
+  <!--  LogNCrash 설정 -->
+  <!--  <appender name="GameAnvil-logger" class="ch.qos.logback.classic.AsyncAppender">-->
+  <!--    &lt;!&ndash; Logback의 AsyncAppender 옵션 &ndash;&gt;-->
+  <!--    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+  <!--      <level>WARN</level>-->
+  <!--    </filter>-->
+  <!--    <param name="includeCallerData" value="false"/>-->
+  <!--    <param name="queueSize" value="2048"/>-->
+  <!--    <param name="neverBlock" value="true"/>-->
+  <!--    <param name="maxFlushTime" value="60000"/>-->
+
+  <!--    &lt;!&ndash; Log & Crash Logback SDK의 LogNCrashHttpAppender 옵션 &ndash;&gt;-->
+  <!--    <appender name="logNCrashHttp" class="com.toast.java.logncrash.logback.LogNCrashHttpAppender">-->
+  <!--      <param name="appKey" value="LCB1LW2aP5YRrkmy"/>-->
+  <!--      <param name="logSource" value="DEV"/>-->
+  <!--      <param name="version" value="DEV-1.0.0"/>-->
+  <!--      <param name="logType" value="log"/>-->
+  <!--      <param name="debug" value="true"/>-->
+  <!--      <param name="category" value="RPS"/>-->
+  <!--      <param name="errorCodeType" value="default"/>-->
+  <!--    </appender>-->
+  <!--  </appender>-->
+    <timestamp key="time" datePattern="HHmmss"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>			
+			<!-- 개발용 : FileName과 Line정보는 성능에 매우 악영향을 주므로 개발용도로만 사용할 것! -->
+			<pattern>[%d{ISO8601}] [%highlight(%-5level)] [%thread] [%cyan(%F:%L)] %yellow(%msg%n)</pattern>
+			
+			<!-- 서비스용 -->
+			<!--<pattern>[%d{ISO8601}] [%highlight(%-5level)] [%thread] [%magenta(%logger{10})] %yellow(%msg%n)</pattern>-->
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+          <fileNamePattern>log/gameanvil-%d{yyyy-MM-dd}.${time}.%i.log</fileNamePattern>
+          <maxHistory>30</maxHistory>
+          <maxFileSize>100MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+			<!-- old -->
+            <!--<pattern>[%d{ISO8601} %d{Z}] [-5(%level)] [%logger{10}] [%X{gameAnvilTag}] %msg%n</pattern>-->
+			
+			<!-- 개발용 : FileName과 Line정보는 성능에 매우 악영향을 주므로 개발용도로만 사용할 것! -->
+			<pattern>[%d{ISO8601}] [%-5level] [%thread] [%F:%L] %msg%n</pattern>
+			
+			<!-- 서비스용 -->
+			<!--<pattern>[%d{ISO8601}] [%-5level] [%thread] [%logger{10}] %msg%n</pattern>-->
+        </encoder>
+    </appender>
+
+	<!-- 서비스용 : FILE 로거는 반드시 ASYNC로 처리하도록 한다. 개발할 때는 FileName과 LineNum을 남기고자 할 경우에 FILE을 직접 사용 -->
+	<!--
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE" />
+    </appender>
+	-->
+
+    <logger name="com.nhn.gameanvil" level="INFO" />
+  <!--  LogNCrash  콘솔에 출력되는 레벨 설정-->
+  <!--    <logger name="com.toast.java.logncrash.logback.LogNCrashHttpAppender" level="WARN"/>-->
+
+    <root>
+        <level value="INFO"/>		
+		<!-- 개발용 : includeLocation="true"는 FileName과 Line정보를 출력하기 위함이며 이는 성능에 매우 악영향을 주므로 개발용도로만 사용할 것! -->
+		<appender-ref ref="FILE" includeLocation="true"/>
+		
+		<!-- 서비스용 -->
+		<!--<appender-ref ref="ASYNC"/>-->
+		
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>
